@@ -17,7 +17,6 @@ const create = async ({ body }) => {
       data,
     };
   } catch (error) {
-    console.log("=userService", error)
     throw error;
   }
 };
