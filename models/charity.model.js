@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
 const charitySchema = new mongoose.Schema({
-    Name: {
-        type: String,
-        required: true
-    },
     donation_amount: {
         type: Number,
         required: true
@@ -15,7 +11,7 @@ const charitySchema = new mongoose.Schema({
     },
     donation_receiver: {
         type: mongoose.Schema.ObjectId,
-        ref: 'users'
+        ref: 'organization'
     },
     createdAt: {
         type: Date,

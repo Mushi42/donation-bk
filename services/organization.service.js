@@ -8,7 +8,7 @@ const create = async ({ body }) => {
     if (isUserCreated.type === "bad") {
       return isUserCreated;
     }
-
+    reqData.user = isUserCreated.data.id;
     const data = await ORGANIZATION_MODEL.create(reqData);
 
     return {
@@ -23,7 +23,9 @@ const create = async ({ body }) => {
 
 const findOne = async ({ params }) => {
   try {
-    const data = await ORGANIZATION_MODEL.findOne({ _id: params.orgId });
+    const data = await ORGANIZATION_MODEL.findOne({
+      _id: params.orgId,
+    }).populate("user", "-password");
     if (data) return { type: "success", message: `organization found`, data };
     else
       return {
@@ -37,15 +39,15 @@ const findOne = async ({ params }) => {
 
 const findAll = async (req) => {
   try {
-    const options = req.query;
-    let data;
-    if (options.name) {
-      // const $regex = escapeStringRegexp(options.categoryName);
-      data = await ORGANIZATION_MODEL.find({ categoryName: options.name });
-    } else data = await ORGANIZATION_MODEL.find(options);
-    if (data.length)
-      return { type: "success", message: `Categories found`, data };
-    else return { type: "bad", message: `Categories not found` };
+    const { searchBy, address, sector, size } = req.query;
+    let filtersArray = [];
+    if (searchBy) filtersArray.push({ name: { $regex: searchBy, $options: 'i' } })
+    if (address) filtersArray.push({ address: { $regex: address, $options: 'i' } })
+    if (sector) filtersArray.push({ sector: { $regex: sector, $options: 'i' } })
+    if (size) filtersArray.push({ size: { $regex: size, $options: 'i' } })
+    let data = await ORGANIZATION_MODEL.find({ ['$or']: filtersArray }).populate("user", "-password");
+    return { type: "success", message: `organization found`, data }
+
   } catch (error) {
     throw error;
   }
