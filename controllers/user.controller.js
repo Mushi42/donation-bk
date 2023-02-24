@@ -3,9 +3,16 @@ const { userService } = require("../services");
 
 const create = async (req, res) => {
     try {
-        console.log(req.bddy)
-        // return
         const data = await userService.create(req);
+        setResponse(res, data);
+    } catch (error) {
+        console.log(error);
+        setResponse(res, { type: "serverError" });
+    }
+};
+const login = async (req, res) => {
+    try {
+        const data = await userService.login(req);
         setResponse(res, data);
     } catch (error) {
         console.log(error);
@@ -55,4 +62,5 @@ module.exports = {
     findOne,
     update,
     purge,
+    login,
 };

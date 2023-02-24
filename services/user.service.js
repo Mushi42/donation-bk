@@ -3,12 +3,33 @@ const { USER_MODEL } = require('../models');
 const create = async ({ body }) => {
     try {
         const reqData = body;
-        const user = await USER_MODEL.findOne({ name: reqData.name });
+        const user = await USER_MODEL.findOne({ email: reqData.email });
         if (!user) {
             const data = await USER_MODEL.create(reqData);
-            return { type: 'success', message: `${data.name.toUpperCase()} is created successfully`, data }
+            return { type: 'success', message: `user created successfully`, data }
         }
-        return { type: 'bad', message: `${reqData.name} USER_MODEL exist!` }
+        return { type: 'bad', message: `user email already registered!` }
+
+    } catch (error) {
+        throw error;
+    }
+};
+const login = async ({ body }) => {
+    try {
+        const { email, password } = body;
+        const user = await USER_MODEL.findOne({ email });
+        if (!user) {
+            const data = await USER_MODEL.create(reqData);
+            return { type: 'success', message: `user created successfully`, data }
+        }
+
+        if(password === user.password) {
+            user.password = undefined
+            return { type: 'success', message: `login successfully`, data: user }
+        } else {
+            return { type: 'bad', message: `${reqData.name} USER_MODEL exist!` }
+        }
+
 
     } catch (error) {
         throw error;
@@ -18,8 +39,8 @@ const create = async ({ body }) => {
 const findOne = async ({ params }) => {
     try {
         const data = await USER_MODEL.findOne({ _id: params.userId })
-        if (data) return { type: 'success', message: `${data.name.toUpperCase()} found`, data }
-        else return { type: 'bad', message: `${data.name.toUpperCase()} USER_MODEL not exist!` }
+        if (data) return { type: 'success', message: `user found`, data }
+        else return { type: 'bad', message: `user not exist!` }
     } catch (error) {
         throw error;
     }
@@ -43,7 +64,7 @@ const update = async ({ params, body }) => {
     try {
         const _id = params.userId;
         const data = await USER_MODEL.findByIdAndUpdate(_id, body, { new: true });
-        if (data) return { type: 'success', message: `${data.shopName.toUpperCase()} shop Updated`, data }
+        if (data) return { type: 'success', message: `user updated`, data }
         else return { type: 'bad', message: `Shops not found` }
 
     } catch (error) {
@@ -64,5 +85,6 @@ module.exports = {
     findOne,
     findAll,
     update,
-    purge
+    purge,
+    login
 }

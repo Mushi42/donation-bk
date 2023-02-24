@@ -1,11 +1,11 @@
 const { setResponse } = require("../helpers");
-const { categoryService } = require("../services");
+const { organizationService } = require("../services");
 
 const create = async (req, res) => {
     try {
         console.log(req.bddy)
         // return
-        const data = await categoryService.create(req);
+        const data = await organizationService.create(req);
         setResponse(res, data);
     } catch (error) {
         console.log(error);
@@ -15,7 +15,7 @@ const create = async (req, res) => {
 
 const findAll = async (req, res) => {
     try {
-        const data = await categoryService.findAll(req);
+        const data = await organizationService.findAll(req);
         setResponse(res, data);
     } catch (error) {
         setResponse(res, { type: "serverError" });
@@ -24,7 +24,7 @@ const findAll = async (req, res) => {
 
 const findOne = async (req, res) => {
     try {
-        const data = await categoryService.findOne(req);
+        const data = await organizationService.findOne(req);
         setResponse(res, data);
     } catch (error) {
         setResponse(res, { type: "serverError" });
@@ -33,7 +33,7 @@ const findOne = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const data = await categoryService.update(req);
+        const data = await organizationService.update(req);
         setResponse(res, data);
     } catch (error) {
         setResponse(res, { type: "serverError" });
@@ -42,7 +42,7 @@ const update = async (req, res) => {
 
 const purge = async (req, res) => {
     try {
-        const data = await categoryService.purge(req);
+        const data = await organizationService.purge(req);
         setResponse(res, data);
     } catch (error) {
         setResponse(res, { type: "serverError" });

@@ -1,4 +1,4 @@
 module.exports = {
-    CATEGORY_MODEL: require('./category.model'),
+    ORGANIZATION_MODEL: require('./organization.model'),
     USER_MODEL: require('./users.model')
 }
