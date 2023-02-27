@@ -45,7 +45,9 @@ const findAll = async (req) => {
     if (address) filtersArray.push({ address: { $regex: address, $options: 'i' } })
     if (sector) filtersArray.push({ sector: { $regex: sector, $options: 'i' } })
     if (size) filtersArray.push({ size: { $regex: size, $options: 'i' } })
-    let data = await ORGANIZATION_MODEL.find({ ['$or']: filtersArray }).populate("user", "-password");
+    let filter = {}
+    if (filtersArray.length) filter['$or'] = filtersArray
+    let data = await ORGANIZATION_MODEL.find(filter).populate("user", "-password");
     return { type: "success", message: `organization found`, data }
 
   } catch (error) {

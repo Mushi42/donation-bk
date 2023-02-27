@@ -18,16 +18,13 @@ const login = async ({ body }) => {
     try {
         const { email, password } = body;
         const user = await USER_MODEL.findOne({ email });
-        if (!user) {
-            const data = await USER_MODEL.create(reqData);
-            return { type: 'success', message: `user created successfully`, data }
-        }
+        if (!user) return { type: 'bad', message: `User not exist!` }
 
-        if(password === user.password) {
+        if (password === user.password) {
             user.password = undefined
             return { type: 'success', message: `login successfully`, data: user }
         } else {
-            return { type: 'bad', message: `${reqData.name} USER_MODEL exist!` }
+            return { type: 'bad', message: `${reqData.name} User exist!` }
         }
 
 
