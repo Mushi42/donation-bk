@@ -1,4 +1,4 @@
-const { ORGANIZATION_MODEL } = require("../models");
+const { ORGANIZATION_MODEL, USER_MODEL } = require("../models");
 const userService = require("./user.service");
 
 const create = async ({ body }) => {
@@ -8,8 +8,11 @@ const create = async ({ body }) => {
     if (isUserCreated.type === "bad") {
       return isUserCreated;
     }
-    reqData.user = isUserCreated.data.id;
+    const userId = isUserCreated.data.id;
+    reqData.user = userId
     const data = await ORGANIZATION_MODEL.create(reqData);
+
+    await USER_MODEL.findByIdAndUpdate(userId, { organization: data.id })
 
     return {
       type: "success",

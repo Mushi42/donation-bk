@@ -11,6 +11,10 @@ const usersSchema = new mongoose.Schema({
   password: {
     type: String,
   },
+  organization: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'organization'
+  },
   createdAt: {
     type: Date,
     default: new Date(),
