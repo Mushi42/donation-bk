@@ -17,7 +17,7 @@ const create = async ({ body }) => {
 const login = async ({ body }) => {
     try {
         const { email, password } = body;
-        const user = await USER_MODEL.findOne({ email });
+        const user = await USER_MODEL.findOne({ email }).populate('organization');
         if (!user) return { type: 'bad', message: `User not exist!` }
 
         if (password === user.password) {
